@@ -119,6 +119,10 @@ public class TikaInstance {
                 // PDF content might be extracted multiple times.
                 pdfParser.getPDFParserConfig().setExtractBookmarksText(false);
 
+                // Bluescan - activer extractInlineImages - pas trouvé le moyen de le faire avec une config tika externe en gardant la config FSCrawler de base en plus
+                logger.debug("Bluescan - enable PDFParserConfig option [extractInlineImages=true]");
+                pdfParser.getPDFParserConfig().setExtractInlineImages(true);
+
                  if (ocrActivated) {
                     logger.debug("OCR is activated.");
                     ocrParser = new TesseractOCRParser();
