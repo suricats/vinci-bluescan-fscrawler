@@ -59,6 +59,11 @@ public class TikaDocParser {
 
     public static void generate(FsSettings fsSettings, InputStream inputStream, String filename, String fullFilename, Doc doc,
                                 MessageDigest messageDigest, long filesize) throws IOException {
+        generate(fsSettings, null, inputStream, filename, fullFilename, doc, messageDigest, filesize);
+    }
+
+    public static void generate(FsSettings fsSettings, String forcedStrategy, InputStream inputStream, String filename, String fullFilename, Doc doc,
+                                MessageDigest messageDigest, long filesize) throws IOException {
         logger.trace("Generating document [{}]", fullFilename);
         // Extracting content with Tika
         // See #38: https://github.com/dadoonet/fscrawler/issues/38
@@ -95,7 +100,10 @@ public class TikaDocParser {
             try {
                 // Set the maximum length of strings returned by the parseToString method, -1 sets no limit
                 logger.trace("Beginning Tika extraction");
-                parsedContent = extractText(fsSettings, indexedChars, inputStream, metadata);
+                logger.debug("Bluescan - forcedStrategy value: {}", forcedStrategy);
+                boolean forcePdfOcr = (forcedStrategy != null && forcedStrategy.equals("forcePdfOCR"));
+                logger.debug("Bluescan - forcePdfOcr value: {}", forcePdfOcr);
+                parsedContent = extractText(fsSettings, forcePdfOcr, indexedChars, inputStream, metadata);
                 logger.trace("End of Tika extraction");
             } catch (Throwable e) {
                 // Build a message from embedded errors

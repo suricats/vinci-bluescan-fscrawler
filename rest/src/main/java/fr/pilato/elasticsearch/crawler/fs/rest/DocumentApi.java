@@ -89,12 +89,14 @@ public class DocumentApi extends RestApi {
             @HeaderParam("index") String headerIndex,
             @QueryParam("id") String queryParamId,
             @QueryParam("index") String queryParamIndex,
+            @QueryParam("forcedStrategy") String queryParamForcedStrategy,
             @FormDataParam("tags") InputStream tags,
             @FormDataParam("file") InputStream filecontent,
             @FormDataParam("file") FormDataContentDisposition d) throws IOException, NoSuchAlgorithmException {
         String id = formId != null ? formId : headerId != null ? headerId : queryParamId;
         String index = formIndex != null ? formIndex : headerIndex != null ? headerIndex : queryParamIndex;
-        return uploadToDocumentService(debug, simulate, id, index, tags, filecontent, d);
+        logger.debug("POST /document (queryParamForcedStrategy = {})", queryParamForcedStrategy);
+        return uploadToDocumentService(debug, simulate, id, index, tags, queryParamForcedStrategy, filecontent, d);
     }
 
     @PUT
@@ -108,11 +110,12 @@ public class DocumentApi extends RestApi {
             @FormDataParam("index") String formIndex,
             @HeaderParam("index") String headerIndex,
             @QueryParam("index") String queryParamIndex,
+            @QueryParam("forcedStrategy") String queryParamForcedStrategy,
             @FormDataParam("tags") InputStream tags,
             @FormDataParam("file") InputStream filecontent,
             @FormDataParam("file") FormDataContentDisposition d) throws IOException, NoSuchAlgorithmException {
         String index = formIndex != null ? formIndex : headerIndex != null ? headerIndex : queryParamIndex;
-        return uploadToDocumentService(debug, simulate, id, index, tags, filecontent, d);
+        return uploadToDocumentService(debug, simulate, id, index, tags, queryParamForcedStrategy, filecontent, d);
     }
 
     @DELETE
@@ -159,6 +162,7 @@ public class DocumentApi extends RestApi {
             String id,
             String index,
             InputStream tags,
+            String forcedStrategy,
             InputStream filecontent,
             FormDataContentDisposition d) throws IOException, NoSuchAlgorithmException {
 
@@ -198,7 +202,7 @@ public class DocumentApi extends RestApi {
         // Path
 
         // Read the file content
-        TikaDocParser.generate(settings, filecontent, filename, filename, doc, messageDigest, filesize);
+        TikaDocParser.generate(settings, forcedStrategy, filecontent, filename, filename, doc, messageDigest, filesize);
 
         // Elasticsearch entity coordinates (we use the first node address)
         ServerUrl node = settings.getElasticsearch().getNodes().get(0);
