@@ -18,30 +18,30 @@
         <!--suppress UnresolvedMavenProperty -->
         <docker.skip>${env.DOCKER_SKIP}</docker.skip>
         <docker.verbose>build</docker.verbose>
-        <docker.username>dadoonet</docker.username>
+        <docker.username>suricats</docker.username>
         <!-- The following assumes that each submodule will be overwritten. -->
         <module.name>es7</module.name>
 
         <!-- Docker Image Definitions -->
         <!-- standard install with no ocr -->
         <docker.noocr.alias>${project.artifactId}-noocr</docker.noocr.alias>
-        <docker.noocr.name>${docker.username}/fscrawler:${project.version}-noocr</docker.noocr.name>
+        <docker.noocr.name>${docker.username}/vinci-bluescan-fscrawler:${project.version}-noocr</docker.noocr.name>
         <docker.noocr.cacheFrom>${docker.noocr.name}</docker.noocr.cacheFrom>
         <docker.noocr.dockerFile>${project.basedir}/src/main/docker/Dockerfile</docker.noocr.dockerFile>
         <docker.noocr.assembly.descriptor>${project.basedir}/src/main/assembly/assembly.xml</docker.noocr.assembly.descriptor>
         <docker.noocr.assembly.mode>tgz</docker.noocr.assembly.mode>
-        <!-- We use this tag to make easy using docker pull dadoonet/fscrawler:noocr -->
+        <!-- We use this tag to make easy using docker pull suricats/vinci-bluescan-fscrawler:noocr -->
         <docker.noocr.tags.0>noocr</docker.noocr.tags.0>
 
         <!-- install tesseract-ocr and all language files -->
         <docker.ocr.alias>${project.artifactId}-ocr</docker.ocr.alias>
-        <docker.ocr.name>${docker.username}/fscrawler:${project.version}-ocr-${module.name}</docker.ocr.name>
+        <docker.ocr.name>${docker.username}/vinci-bluescan-fscrawler:${project.version}-ocr-${module.name}</docker.ocr.name>
         <docker.ocr.cacheFrom>${docker.ocr.name}</docker.ocr.cacheFrom>
         <docker.ocr.dockerFile>${docker.noocr.dockerFile}</docker.ocr.dockerFile>
         <docker.ocr.assembly.descriptor>${docker.noocr.assembly.descriptor}</docker.ocr.assembly.descriptor>
         <docker.ocr.assembly.mode>${docker.noocr.assembly.mode}</docker.ocr.assembly.mode>
         <docker.ocr.args.langsPkg>imagemagick tesseract-ocr tesseract-ocr-all</docker.ocr.args.langsPkg>
-        <!-- The ocr version will be the default one for anyone trying docker pull dadoonet/fscrawler:VERSION -->
+        <!-- The ocr version will be the default one for anyone trying docker pull suricats/vinci-bluescan-fscrawler:VERSION -->
         <docker.ocr.tags.0>${project.version}</docker.ocr.tags.0>
         <docker.ocr.tags.1>latest</docker.ocr.tags.1>
 
